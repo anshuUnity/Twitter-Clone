@@ -1,0 +1,357 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+/* variables */
+
+:root {
+    --filter_icon_color: invert(63%) sepia(75%) saturate(4206%) hue-rotate(176deg) brightness(88%) contrast(92%);
+    --white: #ffffff;
+  }
+
+.toolbar--text--div {
+    border: 0.5px solid #cac6c6;
+}
+.toolbar--text--div h5{
+    font-weight: 700;
+    padding: 5px;
+}
+
+.main-form__div{
+    display: flex;
+    border: 1px solid #cac6c6;
+    border-top: none;
+}
+
+.form_profile--image{
+    text-align: center;
+    width: 15%;
+}
+
+.form_tweet--div{
+    width: 85%;
+}
+
+.tweet-submit{
+    border: none;
+    background: none;
+    width: 15%;
+    padding: 10px;
+    background: #1da1f2;
+    color: white;
+    border-radius: 30px;
+    outline: none;
+}
+
+.disabled{
+    border: none;
+    background: none;
+    width: 15%;
+    padding: 10px;
+    background: rgb(86, 183, 221, 0.5);
+    color: white;
+    border-radius: 30px;
+}
+
+.profile_pic{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.tweet__content{
+    border: none;
+    outline-style: none;
+    height: 100px;
+    width: 95%;
+    border-bottom: 1px solid rgb(190, 189, 189);
+}
+
+.tweet__media{
+    display: none;
+}
+
+#customfile--choose__button{
+    width: 6%;
+    cursor: pointer;
+    filter: var(--filter_icon_color);
+}
+
+::-webkit-input-placeholder { /* Edge */
+    color: #94989b;
+    font-size: 25px;
+}
+  
+:-ms-input-placeholder { /* Internet Explorer */
+    color: #94989b;
+    font-size: 25px;
+}
+  
+::placeholder {
+    color: #94989b;
+    font-size: 25px;
+}
+
+
+/* snackbar styling */
+
+/* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #333; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    bottom: 30px; /* 30px from the bottom */
+  }
+  
+  /* Show the snackbar when clicking on a button (class added with JavaScript) */
+  #snackbar.show {
+    visibility: visible; /* Show the snackbar */
+    /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+    However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+  
+  /* Animations to fade the snackbar in and out */
+  @-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+  }
+  
+  @-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+  
+  @keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+  }
+
+  /* snackbar styling end */
+
+.not-visible{
+    display: none;
+}
+
+.main_div--home_feed{
+    display: flex;
+    border: 1px solid rgb(190, 189, 189);
+    border-top: none;
+    transition: 0.5s;
+}
+
+.main_div--home_feed:hover{
+    background: rgba(0,0,0, 0.06);
+}
+
+.username--time-div{
+    width: 90%;
+}
+
+.profile_ima--div{
+    width: 15%;
+    text-align: center;
+}
+
+.profile_ima--div img{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.profile_ima--div img:hover{
+    cursor: pointer;
+}
+
+.fullname img{
+    filter: var(--filter_icon_color);
+}
+
+.fullname{
+    line-height: 20px;
+    color: #0f1419;
+    font-weight: 700;
+}
+
+.username a{
+    color: #5b7083;
+    font-size: 15px;
+    letter-spacing: normal;
+}
+
+.tweet--date{
+    color: #5b7083;
+    font-size: 15px;
+    letter-spacing: normal;
+}
+
+.tweet-more{
+    width: 100%;
+    text-align: end;
+}
+
+.tweet-more img{
+    filter: invert(44%) sepia(20%) saturate(475%) hue-rotate(167deg) brightness(92%) contrast(92%);
+    margin-top: -5%;
+}
+
+.tweet-media img{
+    width: 90%;
+    height: 300px;
+    border: 1px solid rgba(0,0,0, 0.1);
+    border-radius: 20px;
+    cursor: zoom-in;
+}
+
+.tweet-media video{
+    width: 90%;
+    height: 240px;
+    border: 1px solid rgba(0,0,0, 0.1);
+    border-radius: 20px;
+    outline-style: none;
+    cursor: pointer;
+}
+
+.play-icon{
+    font-size: 10em;
+    position: absolute;
+    margin-left: 25%;
+    margin-top: 5%;
+    color: #1da1f2;
+}
+
+/* viewport code */
+@media (max-width: 500px) {
+    body{
+        width: 100%;
+    }
+    .tweet-submit{
+        width: 20%;
+        padding: 4px;
+        font-size: 15px;
+    }
+}
+
+.tweet-body span{
+    font-family: 'Poppins', sans-serif;
+    color: #7d7f80;
+}
+
+.tweet-interact_icon--images{
+    width: 4%;
+}
+.icon-pad{
+    margin-left: 20%;
+}
+
+.when-liked{
+    filter: invert(21%) sepia(64%) saturate(4005%) hue-rotate(328deg) brightness(92%) contrast(90%);
+}
+
+.interact-3{
+    cursor: pointer;
+}
+
+.count-interaction{
+    font-size: 15px;
+    color: #5b7083;
+    margin-top: 5px;
+}
+
+.tweet--comment:hover{
+    background: rgba(29, 161, 242, 0.1);
+    filter: var(--filter_icon_color);
+    border-radius: 50%;
+}
+
+.tweet--re:hover{
+    background: rgba(23, 191, 99, 0.1);
+    filter: invert(75%) sepia(40%) saturate(5876%) hue-rotate(100deg) brightness(92%) contrast(82%);
+    border-radius: 50%;
+}
+
+.tweet--like:hover{
+    background: rgba(224, 36, 94, 0.1);
+    filter: invert(22%) sepia(60%) saturate(3967%) hue-rotate(327deg) brightness(91%) contrast(92%);
+    border-radius: 50%;
+}
+
+.tweet--share:hover{
+    background: rgba(29, 161, 242, 0.1);
+    filter: var(--filter_icon_color);
+    border-radius: 50%;
+}
+
+.not-visible{
+    display: none;
+}
+
+
+/* video modal */
+
+/* The Modal (background) */
+.modal, .video-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-height: 500px;
+    max-width: 500px;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+    from {transform:scale(0)}
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+      width: 100%;
+    }
+}

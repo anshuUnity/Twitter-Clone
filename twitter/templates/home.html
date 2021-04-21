@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  Home/Twitter
+{% endblock title %}
+{% block css %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock css %}
+{% block content %}
+<div class="twitter-form--div">
+  <div class="toolbar--text--div">
+    <h5 style="font-size: 25px;" class="ml-2" >Home</h5>
+  </div>
+  <div class="main-form__div">
+    <div class="form_profile--image mt-2">
+      {% if request.user.userprofile.profileImage %}
+        <img class="profile_pic" src="{{request.user.userprofile.profileImage.url}}" alt="DP">
+      {% endif %}
+    </div>
+    <div class="form_tweet--div mt-2 mb-1">
+      <form action="{% url 'home' %}" method="post" id="tweet-form">
+        {% csrf_token %}
+        {{tweet_form.as_p}}
+        <input style="float: right;" id="submit__btn" class="tweet-submit disabled mr-2" type="submit" disabled value="Tweet">
+        <img id="customfile--choose__button" src="{% static 'images/icons/media-icon.svg' %}" alt="media">
+        <span id="file--name_custom"></span>
+        <div class="progress progress_bar--box not-visible mt-4" id="progress-box"></div>
+      </form>
+    </div>
+  </div>
+</div>
+<div style="border: 1px solid #ebeef0; height: 10px; background: #ebeef0;"></div>
+
+<div class="append-div">
+</div>
+<div class="tweet-content--div">
+  {% include "tweets/__homefeed__.html" %}
+</div>
+
+
+<!-- The actual snackbar -->
+<div id="snackbar">Tweet Published &#128516;</div>
+
+{% endblock content %}
+
+{% block script %}
+  <script src="{% static 'js/home.js' %}"></script>
+{% endblock %}

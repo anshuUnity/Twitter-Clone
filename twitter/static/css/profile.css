@@ -1,0 +1,160 @@
+
+.main-profile__header--content{
+    margin-top: 2%;
+    margin-left: 15px;
+}
+
+.main-profile__section{
+    border: 0.001em solid rgba(190, 189, 189, 0.4);
+}
+
+.main-profile__header--content h5{
+    font-size: 20px;
+    text-align: start;
+    letter-spacing: normal;
+    font-weight: 1000;
+    color: #0f1419;
+}
+
+.full--name--content{
+    font-size: 20px;
+    text-align: start;
+    letter-spacing: normal;
+    font-weight: 1000;
+    color: #0f1419;
+}
+
+.tweet-counts{
+    margin-top: -1.3%;
+    font-size: 13px;
+    text-align: start;
+    letter-spacing: normal;
+}
+
+
+.cover-image{
+    width: 100%;
+    margin-top: -1%;
+}
+
+.profile-image{
+    width: 20%;
+    height: 15%;
+    border: 3px solid white;
+    border-radius: 50%;
+    margin-top: -10%;
+    margin-left: 10px;
+}
+
+.edit-profile-btn{
+    border: none;
+    padding: 10px 20px 10px 20px;
+    outline: none;
+    background: none;
+    font-size: 15px;
+    text-align: center;
+    float: right;
+    margin-top: -10%;
+    border: 1px solid #1da1f2;
+    border-radius: 20px;
+    color: #1da1f2;
+    font-weight: 700;
+}
+
+.edit-profile-btn:hover{
+    background: rgba(29, 161, 242, 0.1);
+}
+
+.profile-content--div{
+    width: 95%;
+    margin: 0 auto;
+}
+
+
+.username--full__name{
+    line-height: 5px;
+}
+
+.verify--icon{
+    width: 24px;
+    filter: invert(63%) sepia(75%) saturate(4206%) hue-rotate(176deg) brightness(88%) contrast(92%);
+}
+
+.username--full__name span{
+    font-size: 15px;
+    color: #5b7083;
+}
+
+.user--twitter_bio p{
+    font-size: 15px;
+    color: #0f1419;
+}
+
+.link-icons{
+    width: 6%;
+}
+
+.edit--button{
+    margin-right: 5px;
+}
+
+.link-calender--icon{
+    display: inline-flex;
+}
+
+.following-follwer__list{
+    display: flex;
+}
+
+.date--joined{
+    font-size: 15px;
+    color: #5b7083;
+}
+
+.follow-count{
+    font-size: 15px;
+    color: #0f1419;
+    font-weight: 700;
+}
+
+.follow-text{
+    font-size: 15px;
+    color: #5b7083;
+}
+
+#follow_btn{
+    outline: none;
+}
+
+.unfollow:hover{
+    border: none;
+    background: #ca2055;
+    color: white;
+}
+
+.follow-progress-bar{
+    width: 100%;
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+    .edit-profile-btn{
+        margin-top: -20%;
+    }
+
+    .link-calender--icon{
+        display: block;
+    }
+    .profile-image{
+        width: 15%;
+        height: 15%;
+    }
+
+    .user--twitter_bio p{
+        font-size: 10px;
+    }
+
+    .edit-profile-btn{
+        margin-top: -15%;
+    }
+}

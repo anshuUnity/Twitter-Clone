@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Upload Test
+{% endblock title %}
+
+{% block content %}
+<style>
+    .not-visible{
+        display: none;
+    }
+</style>
+<div id="alert-box"></div>
+<br>
+<div class="uploadform mt-5">
+    <form action="" id="upload-form" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>
+<div id="progress-box" class="not-visible"></div>
+{% endblock content %}
+
+{% block script %} 
+    <script>
+        const uploadForm = document.getElementById('upload-form');
+        const progressbar = document.getElementById('progress-box'); 
+        const input = document.getElementById('id_attachment')
+        const alert_box = document.getElementById('alert-box')
+        console.log(input)
+
+        $('#upload-form').submit(function(e) {
+            e.preventDefault();
+            $form = $(this);
+            var formData = new FormData(this);
+            console.log(formData);
+            const image_data = input.files[0]
+            if(image_data != null){
+                console.log(image_data);
+                progressbar.classList.remove('not-visible');
+            }
+            $.ajax({
+                type: 'POST',
+                url: '{% url "upload" %}',
+                data: formData,
+                beforeSend: function(){
+
+                },
+                xhr: function(){
+                    const xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', e=>{
+                        if(e.lengthComputable){
+                            const percent = (e.loaded / e.total)*100;
+                            console.log(percent);
+                            progressbar.innerHTML = `<div class="progress">
+                                                        <div class="progress-bar" role="progressbar" style="width: ${percent}%" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>`
+                        }
+                    });
+                    return xhr;
+                },
+                success:function(response){
+                    console.log(response);
+                    alert_box.innerHTML = ` <div class="alert alert-success" role="alert">
+                                                Tweet Send Successfully
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                            </div>`;
+                    uploadForm.reset();
+                    progressbar.classList.add('not-visible');
+                },
+                error: function(error){
+                    console.log(error);
+                },
+                cache: false,
+                contentType:false,
+                processData:false
+            });
+        });
+    </script>
+{% endblock %}

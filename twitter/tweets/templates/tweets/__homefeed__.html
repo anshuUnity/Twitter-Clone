@@ -1,0 +1,107 @@
+{% load static %}
+{% load custom_tag %}
+{% for tweet in tweets %}
+<div class="main_div--home_feed" id='scroll-div'>
+    <div class="profile_ima--div mt-2 mb-2">
+        {% if tweet.user.userprofile.profileImage %}
+          <img src="{{tweet.user.userprofile.profileImage.url}}" alt="DP">
+        {% else %}
+            <img src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" alt="DP">
+        {% endif %}
+    </div>
+    <div class="tweet_content__main--div mt-2 mb-2" style="width:100%;" >
+        <div class="username--time-div">
+            <span class="fullname">
+                {{tweet.user.userprofile.name}}
+                {% if tweet.user.userprofile.is_verified %}
+                  <img style="width:4%;" src="{% static 'images/icons/verif-icon.svg' %}" alt="verify">
+                {% endif %}
+            </span>
+
+            <span class="username" data-toggle="tooltip" data-placement="right" title="{{tweet.user.username}}">
+                <a href="{{tweet.user.userprofile.get_absolute_url}}">@{{tweet.user.username}}</a>,
+            </span>
+
+            <span class="tweet--date">
+                {{tweet.date|date:"P"}}
+            </span>
+
+        </div>
+
+        <div class="tweet-more">
+            <img class="mr-3" style="width: 4%;" src="{% static 'images/icons/tweet-more.svg' %}" alt="more">
+        </div>
+
+        <div class="tweet-body--main">
+            <div class="tweet-body">
+                <a href="{% url 'tweets:tweet_detail' id=tweet.id %}" style="text-decoration: none;">
+                    <span>{{tweet.tweet_content|anshu|safe}}</span>
+                </a>
+            </div>
+            <div class="tweet-media mt-2">
+                {% if tweet.media and tweet.is_video %}
+                <i class="fa fa-play-circle-o play-icon" aria-hidden="true"></i>
+                <video onclick="openVideoModal('{{tweet.media.url}}')" id="tweet-video-{{tweet.id}}">
+                    <source src="{{tweet.media.url}}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                {% elif tweet.media %}
+                    <img onclick="openModal('{{tweet.id}}')" id="tweet_image-{{tweet.id}}" src="{{tweet.media.url}}" alt="Tweet Media">
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="tweet-interact__icons mt-2">
+            <span class="tweet--comment" data-toggle="tooltip" data-placement="right" title="Comment">
+                <img class="tweet-interact_icon--images" id="interact-1" src="{% static 'images/icons/comment.svg' %}" alt="comment">
+                <span class="count-interaction">2</span>
+            </span>
+            <span class="tweet--re icon-pad" data-toggle="tooltip" data-placement="right" title="Retweet">
+                <img class="tweet-interact_icon--images" id="interact-2" src="{% static 'images/icons/retweet.svg' %}" alt="retweet">
+                <span class="count-interaction">2</span>
+            </span>
+            <span class="tweet--like icon-pad" id="like-icon-ajax--{{tweet.id}}" data-toggle="tooltip" data-placement="right" title="Like">
+                {% if request.user in tweet.likes.all %}
+                    <img class="tweet-interact_icon--images interact-3 when-liked" onclick="likeTweet('{{tweet.id}}')" src="{% static 'images/icons/liked.svg' %}" alt="like">
+                {% else %}
+                    <img class="tweet-interact_icon--images interact-3" onclick="likeTweet('{{tweet.id}}')" src="{% static 'images/icons/heart.svg' %}" alt="like">
+                {% endif %}
+                <span class="count-interaction">{{tweet.likes.count}}</span>
+            </span>
+            <span class="tweet--share icon-pad" data-toggle="tooltip" data-placement="right" title="Share">
+                <img class="tweet-interact_icon--images" id="interact-4" src="{% static 'images/icons/share.svg' %}" alt="share">
+                <span class="count-interaction">2</span>
+            </span>
+        </div>
+
+    </div>
+
+    <form action="{% url 'tweets:liked' %}" method="POST" class='like-form' id='{{tweet.id}}'>
+        {% csrf_token %}
+        <input type="hidden" name='tweet_id' value={{tweet.id}}>
+        <input type="submit" class="not-visible" id='not-visible-{{tweet.id}}' value=''>
+    </form>
+
+</div>
+{% endfor %}
+
+
+<!-- The Image Modal -->
+<div id="myModal" class="modal">
+    <!-- The Close Button -->
+    <span class="close">&times;</span>
+
+      <!-- Modal Content (The Image) -->
+    <img class="modal-content" id="img01">
+</div>
+
+
+<!-- The Video Modal -->
+<div id="vModal" class="video-modal">
+    <!-- The Close Button -->
+    <span class="close close-videoModal">&times;</span>
+
+    <video id="tweet-video-modal" autoplay class='modal-content' controls>
+
+    </video>
+</div>

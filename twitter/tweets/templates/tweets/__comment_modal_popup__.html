@@ -1,0 +1,71 @@
+{% load static %}
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Reply</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="comment-modal--tweet-user__detail">
+                    <div class="tweet--user--userprofile">
+                        {% if tweet.user.userprofile.profileImage %}
+                            <img src="{{tweet.user.userprofile.profileImage.url}}" alt="DP">
+                        {% else %}
+                          <img src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" alt="DP">
+                        {% endif %}
+                        <div class="verticle-line">
+                        </div>
+                    </div>
+                    <div class="tweet-content--div">
+                        <div class="username--date_div">
+                            <span class="name">
+                                {{tweet.user.userprofile.name}}
+                                {% if tweet.user.userprofile.is_verified %}
+                                    <img style="width:4%;" src="{% static 'images/icons/verif-icon.svg' %}" alt="verify">
+                                {% endif %}
+                            </span>
+                            <span class="username" data-toggle="tooltip" data-placement="right" title="{{tweet.user.username}}">
+                                <a style="text-decoration: none;" href="{{tweet.user.userprofile.get_absolute_url}}">@{{tweet.user.username}}</a>.
+                            </span>
+                            <span class="tweet--date">
+                                {{tweet.date|date:"P d F Y"}}
+                            </span>
+                        </div>
+                        <div class="tweet--actual_content">
+                            <p>{{tweet.tweet_content}}</p>
+                        </div>
+                        <div class="reply__to-div" style="color: #5b7083; font-size: 15px;">
+                            Replying to <a href="{{tweet.user.userprofile.get_absolute_url}}">@{{tweet.user.username}}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="request--user_details mt-2">
+                    <div style="width: 15%;" class="request--user_profiles">
+                        {% if request.user.userprofile.profileImage %}
+                            <img src="{{request.user.userprofile.profileImage.url}}" alt="DP">
+                        {% else %}
+                            <img src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" alt="DP">
+                        {% endif %}
+                    </div>
+                    <div style="width: 85%;" class="comment__form">
+                        <form action="{% url 'tweets:tweet_detail' id=tweet.id %}" method="post" id='comment-form'>
+                            {% csrf_token %}
+                            {{comment_form.as_p}}
+                            <div class="custom-media-btn">
+                                <input style="float: right;" type="submit" class="comment_submit-btn disabled" disabled value="Reply" id="comment_submit-btn">
+                                <img id="customfile--choose__button" src="{% static 'images/icons/media-icon.svg' %}" alt="media">
+                                <span id="file--name_custom"></span>
+                            </div>
+                            <div class="progress progress_bar--box not-visible mt-4" id="progress-box"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

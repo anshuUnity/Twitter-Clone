@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+{{tweet.user.userprofile.name}} on Twitter: "{{tweet.tweet_content}}"
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/detail_page.css' %}">
+{% endblock css %}
+
+{% block content %}
+<div class="toolbar--div">
+    <h5 class="ml-2">Thread</h5>
+</div>
+<div class="tweet-content-detail-div mb-2">
+    <span class="tweet--user__profile-image ml-2">
+        {% if tweet.user.userprofile.profileImage %}
+        <img src="{{tweet.user.userprofile.profileImage.url}}" alt="DP">
+        {% else %}
+        <img src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" alt="DP">
+        {% endif %}
+    </span>
+    <span class="tweet--user_name">
+        {{tweet.user.userprofile.name}}
+        {% if tweet.user.userprofile.is_verified %}
+        <img style="width:4%; filter:invert(63%) sepia(75%) saturate(4206%) hue-rotate(176deg) brightness(88%) contrast(92%);"
+            src="{% static 'images/icons/verif-icon.svg' %}" alt="verify">
+        {% endif %}
+    </span>
+    <span class="tweet--user_username">
+        @{{tweet.user.username}}
+    </span>
+    <div class="tweet--content-div ml-2 mt-2">
+        <p>{{tweet.tweet_content}}</p>
+    </div>
+    <div class="tweet-media--div">
+        {% if tweet.media and tweet.is_video %}
+        <i class="fa fa-play-circle-o play-icon" aria-hidden="true"></i>
+        <video onclick="openVideoModal('{{tweet.media.url}}')" id="tweet-video-{{tweet.id}}" controls>
+            <source src="{{tweet.media.url}}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        {% elif tweet.media %}
+        <img onclick="openModal('{{tweet.id}}')" id="tweet_image-{{tweet.id}}" src="{{tweet.media.url}}"
+            alt="Tweet Media">
+        {% endif %}
+    </div>
+    <div class="tweet-post--time_os ml-2">
+        <span>
+            {{tweet.date|date:'P d F Y'}} . Twitter for Web
+        </span>
+    </div>
+    <hr>
+    <div class="like--count ml-2">
+        <span>{{tweet.likes.count}}</span> like{{tweet.likes.count|pluralize}}
+    </div>
+    <hr>
+    <div class="tweet-interact--icon">
+        <div class="comment-icon" data-toggle="modal" data-target="#exampleModal">
+            <img class="tweet-interact_icon--images" id="interact-1" src="{% static 'images/icons/comment.svg' %}"
+                alt="comment">
+        </div>
+        <div class="retweet-icon">
+            <img class="tweet-interact_icon--images" id="interact-2" src="{% static 'images/icons/retweet.svg' %}"
+                alt="comment">
+        </div>
+        <div class="like-icon">
+            {% if request.user in tweet.likes.all %}
+            <img class="tweet-interact_icon--images interact-3 when-liked" src="{% static 'images/icons/liked.svg' %}"
+                alt="like">
+            {% else %}
+            <img class="tweet-interact_icon--images interact-3" src="{% static 'images/icons/heart.svg' %}" alt="like">
+            {% endif %}
+        </div>
+        <div class="share-icon">
+            <img class="tweet-interact_icon--images" id="interact-4" src="{% static 'images/icons/share.svg' %}"
+                alt="comment">
+        </div>
+    </div>
+</div>
+{% include "tweets/__comment_modal_popup__.html" %}
+{% endblock content %}
+
+{% block script %}
+    <script src="{% static 'js/detail.js' %}" defer></script>
+{% endblock script %}

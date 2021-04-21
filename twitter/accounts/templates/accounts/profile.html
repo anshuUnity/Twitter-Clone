@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tag %}
+
+{% block title %}{{profile.username}}{% endblock title %}
+    
+{% block css %}<link rel="stylesheet" href="{% static 'css/profile.css' %}">{% endblock css %}
+
+{% block content %}
+    <div class="main-profile__section">
+        <div class="main-profile__header--content">
+            <h5>{{profile.userprofile.name}}</h5>
+            <p class="tweet-counts">6 Tweets</p>
+        </div>
+        <div class="main-profile__section-coverimage">
+            <img class="cover-image" src="{{profile.userprofile.coverImage.url}}" alt="Cover Image could not load">
+            <div class="profile-image__btns">
+                <div class="profile-image__div">
+                    <img src="{{profile.userprofile.profileImage.url}}" alt="Profile Image could not load" class="profile-image">
+                </div>
+                {% if profile.username == request.user.username %}
+                    <div class="edit--button">
+                        <button class="edit-profile-btn">Edit Profile</button>
+                    </div>
+                {% else %}
+                    <div class="edit--button">
+                        <form action="{% url 'accounts:follow' %}" method="POST" id="follow_form">
+                            {% csrf_token %}
+                            <input type="hidden" name="profile_pk" value={{profile.pk}}>
+                            {% if request.user in profile.followers.followers.all %}
+                                <button type="submit" class="edit-profile-btn unfollow" id="follow_btn">Following</button>
+                            {% else %}
+                                <button type="submit" class="edit-profile-btn" id="follow_btn">Follow</button>
+                            {% endif %}
+                        </form>
+                    </div>
+                        <div class="follow-progress-bar" id="spinner">
+                        </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="profile-content--div">
+            <div class="username--full__name">
+                <h5 class="full--name--content">
+                    {{profile.userprofile.name}}
+                    {% if profile.userprofile.is_verified %}
+                        <img src="{% static 'images/icons/verif-icon.svg' %}" alt="Profile Image could not load" class="verify--icon ml-1"> 
+                    {% endif %}
+                </h5>
+                <span>@{{profile.username}}</span>
+            </div>
+            <div class="user--twitter_bio mt-3">
+                <p>{{profile.userprofile.bio|anshu|safe}}</p>
+            </div>
+            <div class="link-calender--icon">
+                <div class="link--icon__url flex--item">
+                    <img class="link-icons" src="{% static 'images/icons/link-icon.svg' %}" alt="link icon">
+                    <a href="{{profile.userprofile.website}}">{{profile.userprofile.website|linkerate}}</a>
+                </div>
+                <div class="link--icon__url flex--item">
+                    <img class="link-icons" src="{% static 'images/icons/calender.svg' %}" alt="link icon">
+                    <span class="date--joined">Joined {{profile.userprofile.joining_date|date:"F Y"}}</span>
+                </div>
+            </div>
+            <div class="following-follwer__list mt-2">
+                <div class="link--icon__url flex--item mr-5">
+                    <span class="follow-count" id="following-count">{{profile.followers.following.count}}</span> <span class="follow-text"> Following</span>
+                </div>
+                <div class="link--icon__url flex--item">
+                    <span class="follow-count" id="followers-count">{{profile.followers.followers.count}}</span><span class="follow-text"> Followers</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block script %}
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock script %}

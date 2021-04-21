@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto:wght@300&display=swap');
+*{
+    margin: 0%;
+    padding: 0%;
+    font-family: 'Open Sans', sans-serif
+}
+
+.content{
+    width:100%;
+    text-align:center;
+    margin-top: 10%;
+}
+
+input{
+    padding: 20px;
+    width: 50%;
+    margin-top: 10px;
+    border: none;
+    border-bottom: 1px solid rgb(29 161 242);
+    outline-style: none;
+    padding-bottom: 30px;
+}
+
+.login-btn{
+    width: 50%;
+    margin-top: 30px;
+    border-radius: 30px;
+    border: none;
+    padding: 10px;
+    outline-style: none;
+    color: white;
+    background-color: rgb(29 161 242);
+    opacity: 0.5;
+    font-size: 16px;
+    transition: ease 0.5s;
+}
+
+.login-btn:hover{
+    opacity: 1;
+}
+
+.important-link{
+    width: 50%;
+    margin: 0 auto;
+    display: flex;
+}
+
+.flex-child{
+    flex:1;
+}
+
+.flex-child:first-child {
+    margin-right: 50px;
+}
+
+.flex-child a{
+    text-decoration: none;
+}
+
+@media (max-width: 440px){
+    input{
+        width: 100%;
+    }
+    .important-link{
+        width: 100%;
+    }
+
+    .login-btn{
+        width: 100%;
+    }
+}

@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto:wght@300&display=swap');
+
+/* side bar styling */
+.brand-logo{
+    width: 30px;
+    margin-top: -2px;
+    filter: invert(63%) sepia(75%) saturate(4206%) hue-rotate(176deg) brightness(88%) contrast(92%);
+}
+
+.sidebar-menu{
+    position: fixed;
+}
+
+@media (max-width: 500px) {
+    .sidebar-menu{
+        display: none;
+    }
+}
+
+.nav-anchor__links{
+    color: #0f141a;
+}
+
+.sidebar-menu__item{
+    font-size: 19px;
+    color: #0f141a;
+    display: flex;
+    font-family: 'Open Sans', sans-serif;
+    align-items: center;
+    font-weight: 700;
+    padding: 14px;
+
+}
+
+.sidebar-menu__itemb{
+    font-size: 19px;
+    display: flex;
+    font-family: 'Open Sans', sans-serif;
+    align-items: center;
+    font-weight: 700;
+    padding: 14px;
+}
+
+.tweet-button{
+    width: 100%;
+    border: none;
+    outline: none;
+    background: #1da0f2;
+    padding: 10px;
+    border-radius: 25px;
+}
+
+.tweet-button:hover{
+    background: #1a91da;
+}
+
+.sidebar-menu__item:hover{
+    background: rgba(29, 161, 242, 0.1);
+    filter: invert(63%) sepia(75%) saturate(4206%) hue-rotate(176deg) brightness(88%) contrast(92%);
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.sidebar-menu__item-icon{
+    height: 26px;
+    margin-right: 15px;
+}
+
+.sidebar-menu__item--active{
+    color: #1da0f2;
+}
+
+.sidebar-menu__item--active .sidebar-menu__item-icon{
+    filter: invert(63%) sepia(75%) saturate(4206%) hue-rotate(176deg) brightness(88%) contrast(92%);
+}
+
+
+
+/* side bar styling */
