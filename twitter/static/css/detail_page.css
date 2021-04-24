@@ -218,3 +218,70 @@
     color: white;
     border-radius: 30px;
 }
+
+.comment-container{
+    border: 1px solid #e2e0e0;
+}
+
+.main_comment_div{
+    transition: 0.5s;
+    border-bottom: 1px solid #e2e0e0;
+}
+
+.main_comment_div:hover{
+    background: rgba(0,0,0, 0.06);
+}
+
+.profile--username_date-div{
+    width: 100%;
+    display: flex;
+}
+
+.comment-user--profile-pic{
+    width: 15%;
+    text-align: center;
+}
+
+.comment-user--profile-pic img{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.username-date-div{
+    width: 85%;
+}
+
+.username{
+    font-size: 15px;
+    line-height: 20px;
+    color: #5b7083;
+}
+
+.name{
+    font-size: 15px;
+    color: #0f1419;
+}
+
+.replying--to-div{
+    font-size: 15px;
+    color: #5b7083;
+}
+
+.comment-content span{
+    font-size: 15px;
+    color: #0f1419;
+    font-family: 'Poppins', sans-serif;
+}
+
+.interaction--icons-div{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    display: flex;
+}
+
+.interaction--icons-div img{
+    width: 15%;
+    filter: invert(43%) sepia(46%) saturate(242%) hue-rotate(167deg) brightness(89%) contrast(85%);
+}

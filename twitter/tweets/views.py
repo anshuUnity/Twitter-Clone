@@ -9,8 +9,12 @@ from .forms import TweetForm, CommentForm
 from accounts.models import Followers
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
+
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+@method_decorator(login_required, name='dispatch')
 class HomeView(View):
 
     def get(self, request):
@@ -73,6 +77,7 @@ def like_tweet(request):
 
 def tweetDetail(request, id):
     tweet_obj = get_object_or_404(Tweet, id=id)
+    comment_obj = TweetComments.objects.filter(tweet=tweet_obj).order_by('-date')
     check_list = ['covid', 'vaccination', 'covid-19', 'covid19']
     covid_bar = False
     for i in check_list:
@@ -90,8 +95,19 @@ def tweetDetail(request, id):
             form.instance.tweet = tweet_obj
             form.save()
             form_data = {}
-            
-            return JsonResponse({'Comment Posted':True})
+            comment_obj = TweetComments.objects.get(id=form.instance.id)
+            data = {
+                'comment':comment_obj.comment_content,
+                'date':comment_obj.date,
+                'name':comment_obj.user.userprofile.name,
+                'comment_username':comment_obj.user.username,
+                'tweet_username':tweet_obj.user.username,
+            }
+            if (comment_obj.user.userprofile.profileImage):
+                data['comment_profile'] = str(comment_obj.user.userprofile.profileImage.url)
+            else:
+                data['comment_profile'] = str("https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640")
+            return JsonResponse(data)
         else:
             return JsonResponse({"Error":form.errors})
     else:
@@ -99,6 +115,7 @@ def tweetDetail(request, id):
         
     data = {
         'tweet':tweet_obj,
+        'comments':comment_obj,
         'check_list': check_list,
         'covid_bar':covid_bar,
         'comment_form':form,

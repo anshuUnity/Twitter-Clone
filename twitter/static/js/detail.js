@@ -39,10 +39,55 @@ $('#comment-form').submit(function(e){
         dataType: 'json',
 
         success: function(response){
-            console.log(response);
+            console.log(response.date);
             comment_form.reset();
             replyBtn.setAttribute("disabled", null)
             replyBtn.classList.add('disabled');
+            $('#exampleModal').modal('hide');
+            $('.comment-container').prepend(
+                `<div class="main_comment_div">
+                    <div class="profile--username_date-div">
+                        <div class="comment-user--profile-pic mt-2">
+                                <img src="${response.comment_profile}" alt="DP">
+                        </div>
+                        <div class="username-date-div mt-2">
+                            <div class="username--name-div">
+                                <span class="name" style="font-weight: 700;">
+                                    ${response.name}
+                                </span>
+            
+                                <span class="username">
+                                    @${response.comment_username} .
+                                </span>
+                            </div>
+                            <div class="replying--to-div">
+                                <span>
+                                    Replying to <a href="#">@${response.tweet_username}</a>
+                                </span>
+                            </div>
+                            <div class="comment-content">
+                                <span>
+                                    ${response.comment}
+                                </span>
+                            </div>
+                            <div class="interaction--icons-div">
+                            <div class="comment-icon">
+                                <img src="/static/images/icons/comment.svg" alt="comment">
+                            </div>
+                            <div class="retweet-icon">
+                                <img src="/static/images/icons/retweet.svg" alt="retweet">
+                            </div>
+                            <div class="like-icon">
+                                <img src="/static/images/icons/heart.svg" alt="Like">
+                            </div>
+                            <div class="share-icon">
+                                <img src="/static/images/icons/share.svg" alt="share">
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>`
+            );
         },
         error: function(error){
             console.log(error);
