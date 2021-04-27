@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, Http404
 from accounts.forms import SignUpForm
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -62,10 +62,7 @@ def loginView(request):
         return render(request, 'accounts/login.html')
 
 def profile_detail(request, username):
-    try:
-        profile = User.objects.get(username=username)
-    except User.DoesNotExist:
-        profile = ""
+    profile = get_object_or_404(User.objects.select_related('userprofile', 'followers'), username=username)
     return render(request, 'accounts/profile.html', {'profile':profile})
 
 @csrf_exempt

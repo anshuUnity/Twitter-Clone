@@ -21,12 +21,16 @@ class HomeView(View):
         form = TweetForm()
         followObj = Followers.objects.get(user=request.user)
         following_obj = followObj.following.all()
-        # tweet = Tweet.objects.all().order_by("-date")
-        tweet = Tweet.objects.filter(user__in = following_obj).order_by("-date")
-        context = {
-            'tweet_form':form,
-            'tweets':tweet,
-        }
+        tweet = Tweet.objects.select_related('user','user__userprofile').prefetch_related('likes').filter(user__in = following_obj).order_by("-date")
+        if tweet:
+            context = {
+                'tweet_form':form,
+                'tweets':tweet,
+            }
+        else:
+            context = {
+                'no Data': 'Follow Someone to see the latest tweets'
+            }
         return render(request, 'home.html', context)
 
     def post(self, request):
@@ -76,8 +80,9 @@ def like_tweet(request):
         return JsonResponse({'liked':'not worked'})
 
 def tweetDetail(request, id):
-    tweet_obj = get_object_or_404(Tweet, id=id)
-    comment_obj = TweetComments.objects.filter(tweet=tweet_obj).order_by('-date')
+    tweet_obj = get_object_or_404(Tweet.objects.select_related('user','user__userprofile'), id=id)
+    tweet_likes = tweet_obj.likes.count()
+    comment_obj = TweetComments.objects.select_related('user','user__userprofile').filter(tweet=tweet_obj).order_by('-date')
     check_list = ['covid', 'vaccination', 'covid-19', 'covid19']
     covid_bar = False
     for i in check_list:
@@ -95,7 +100,7 @@ def tweetDetail(request, id):
             form.instance.tweet = tweet_obj
             form.save()
             form_data = {}
-            comment_obj = TweetComments.objects.get(id=form.instance.id)
+            comment_obj = TweetComments.objects.select_related('user').get(id=form.instance.id)
             data = {
                 'comment':comment_obj.comment_content,
                 'date':comment_obj.date,
@@ -115,10 +120,10 @@ def tweetDetail(request, id):
         
     data = {
         'tweet':tweet_obj,
+        'tweet_likes': tweet_likes,
         'comments':comment_obj,
         'check_list': check_list,
         'covid_bar':covid_bar,
         'comment_form':form,
     }
     return render(request, 'tweets/tweet_detail.html', data)
-

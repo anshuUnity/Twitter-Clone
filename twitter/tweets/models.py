@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 import os
-from moviepy.editor import *
 # Create your models here.
 
 # commanda if migrations not working

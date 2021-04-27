@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+import debug_toolbar
+
 from accounts import views
 from tweets import views as tview
 
@@ -28,7 +30,8 @@ urlpatterns = [
     path('<username>/', views.profile_detail, name = 'profile_detail'),
     path('accounts/', include(('accounts.urls','accounts'), namespace='accounts')),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('tweets/', include('tweets.urls'))
+    path('tweets/', include('tweets.urls')),
+    path('__debug__/', include(debug_toolbar.urls)),
 ]
 
 if settings.DEBUG:

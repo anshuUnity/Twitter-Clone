@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_tag %}
 {% block title %}
 {{tweet.user.userprofile.name}} on Twitter: "{{tweet.tweet_content}}"
 {% endblock title %}
@@ -31,7 +32,7 @@
         @{{tweet.user.username}}
     </span>
     <div class="tweet--content-div ml-2 mt-2">
-        <p>{{tweet.tweet_content}}</p>
+        <p>{{tweet.tweet_content|anshu|safe}}</p>
     </div>
     <div class="tweet-media--div">
         {% if tweet.media and tweet.is_video %}
@@ -52,7 +53,7 @@
     </div>
     <hr>
     <div class="like--count ml-2">
-        <span>{{tweet.likes.count}}</span> like{{tweet.likes.count|pluralize}}
+        <span>{{tweet_likes}}</span> like{{tweet_likes|pluralize}}
     </div>
     <hr>
     <div class="tweet-interact--icon">

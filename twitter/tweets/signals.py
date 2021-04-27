@@ -1,6 +1,5 @@
 from django.db.models.signals import post_save
 from tweets.models import Tweet
-from moviepy.editor import *
 
 #reciever
 from django.dispatch import receiver

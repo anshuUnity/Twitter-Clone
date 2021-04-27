@@ -6,7 +6,7 @@ from django.urls import reverse
 # Create your models here.
 
 class Userprofile(models.Model):
-    user = models.OneToOneField(to=User, on_delete=models.CASCADE)
+    user = models.OneToOneField(to=User, on_delete=models.CASCADE, related_name='userprofile')
     coverImage = models.ImageField(null=True, blank=True)
     profileImage = models.ImageField(null=True, blank=True)
     bio = models.TextField(max_length=160, blank=True, null=True)
