@@ -44,6 +44,9 @@
             <div class="username--full__name">
                 <h5 class="full--name--content">
                     {{profile.userprofile.name}}
+                    {% if request.user.is_authenticated and request.user.username == profile.username %}
+                        <i style="cursor: pointer;" class="fa fa-info-circle" data-toggle="modal" data-target="#exampleModal"></i>
+                    {% endif %}
                     {% if profile.userprofile.is_verified %}
                         <img src="{% static 'images/icons/verif-icon.svg' %}" alt="Profile Image could not load" class="verify--icon ml-1"> 
                     {% endif %}
@@ -72,9 +75,64 @@
                 </div>
             </div>
         </div>
+        <div class="profile_detail--tabs">
+            {% include 'accounts/__profile__detail__inject__.html' %}
+        </div>
     </div>
+
+
+<!-- modal popup -->
+<!-- Button trigger modal -->
+
+  
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Email Verification</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="email-verify-div">
+            <div class="invisible" role="alert" id='success-alert'></div>
+            {% if profile.userprofile.mail_verified %}
+                <div class="alert alert-success" role="alert">
+                    Cool!! Your email is verified!!
+                </div>
+            {% else %}
+                <div class="alert alert-danger" role="alert">
+                    Oops, Your email is not verified!!
+                    <form action="{% url 'accounts:email_verify' %}" method="post" id="send-otp">
+                        {% csrf_token %}
+                        <input type="submit" value="Get OTP to verify email">
+                        <div class="spinner-border text-primary invisible" id="otp-spinner" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                    </form>
+
+                    <form action="{% url 'accounts:check_otp' %}" method="post" id="check-otp">
+                        {% csrf_token %}
+                        <input type="text" name="user_otp" id="user-otp" placeholder="Enter OTP here!!" required autocomplete="off">
+                        <input type="submit" value="Verify Email">
+                    </form>
+                    
+                </div>
+            {% endif %}
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock content %}
 
+{% block right_sidebar %}
+    {% if request.user.is_authenticated and profile.username == request.user.username %}
+        <a href="{% url 'accounts:user_report' %}" target="_blank">
+            <img src="{% static 'images/icons/pdf.svg' %}" style="width: 10%; margin-top: 10px;" alt="report"> See Report
+        </a>
+    {% endif %}
+{% endblock %}
 
 {% block script %}
     <script src="{% static 'js/profile.js' %}"></script>

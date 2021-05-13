@@ -140,7 +140,7 @@
 
   /* snackbar styling end */
 
-.not-visible{
+.result-not-visible, .not-visible{
     display: none;
 }
 
@@ -354,4 +354,73 @@
     .modal-content {
       width: 100%;
     }
+}
+
+
+/* search div styling */
+
+.search-input{
+    width: 100%;
+    outline: none;
+    border: none;
+    margin-top: 6px;
+    border-radius: 30px;
+    padding: 10px;
+    background-color: rgba(0,0,0,0.09);
+}
+
+.search-input:focus{
+    background: white;
+    border: 1px solid #1b95e0;
+}
+
+.search-input::-webkit-input-placeholder {
+    font-size: 15px;
+}
+
+.search-result-card{
+    width: 100%;
+    box-shadow: 0 8px 8px rgba(0,0,0, 0.25);
+    transition: 0.5s;
+    border-radius: 7px;
+    padding: 15px 15px;
+    height: 300px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.singel-result{
+    margin-top: 5px;
+}
+
+.singel-result a{
+    text-decoration: none;
+    color: #5b7083;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+  
+  /* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey; 
+    border-radius: 8px;
+}
+   
+  /* Handle */
+::-webkit-scrollbar-thumb {
+    background: #5b7083; 
+    border-radius: 8px;
+}
+  
+  /* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #7f878d; 
+}
+
+.singel-result img{
+    width: 15%;
+    height: 15%;
+    border-radius: 50%;
 }

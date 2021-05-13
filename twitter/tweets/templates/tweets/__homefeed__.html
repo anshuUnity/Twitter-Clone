@@ -28,10 +28,19 @@
             </span>
 
         </div>
-
-        <div class="tweet-more">
-            <img class="mr-3" style="width: 4%;" src="{% static 'images/icons/tweet-more.svg' %}" alt="more">
-        </div>
+        {% if request.user.is_authenticated %}
+            <div class="tweet-more dropdown">
+                <img class="mr-3 dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                style="width: 4%;cursor: pointer;" src="{% static 'images/icons/tweet-more.svg' %}" alt="more">
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {% if request.user == tweet.user %}
+                        <a class="dropdown-item" href="#">Edit</a>
+                    {% else %}
+                        <a class="dropdown-item" href="#">Report</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
 
         <div class="tweet-body--main">
             <div class="tweet-body">

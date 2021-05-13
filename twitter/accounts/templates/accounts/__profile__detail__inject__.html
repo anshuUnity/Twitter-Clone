@@ -1,0 +1,42 @@
+{% load static %}
+<div class="tab--container">
+    <div class="tab--form_container">
+        <div class="user_tweets--tabs">
+            <form action="{% url 'accounts:user_tweet' %}" method="get" id="user_tweet" class="tab-form">
+                <input type="hidden" name="username" value="{{profile.username}}">
+                <input type="submit" class="tab-btn" value="Tweets" onclick="showTabContent(0)">
+            </form>
+        </div>
+        <div class="user--reply-tabs">
+            <form action="#" method="get" id="user_reply" class="tab-form">
+                <input type="hidden" value="{{profile.username}}">
+                <input type="submit" class="tab-btn" value="Reply" onclick="showTabContent(1)">
+            </form>
+        </div>
+        <div class="user-liked--tweet-tabs">
+            <form action="{% url 'accounts:liked_tweet' %}" method="get" id="user_likes" class="tab-form">
+                <input type="hidden" name='username_liked_tab' value="{{profile.username}}">
+                <input type="submit" class="tab-btn" value="Likes" onclick="showTabContent(2)">
+            </form>
+        </div>
+        <div class="user--media-tabs">
+            <form action="#" method="get" id="user_media" class="tab-form">
+                <input type="hidden" value="{{profile.username}}">
+                <input type="submit" class="tab-btn" value="Media" onclick="showTabContent(3)">
+            </form>
+        </div>
+    </div>
+    <div class="tweets-tab--content tab-panels" id='tweet-tab'>
+        <div class="spinner-box" style="width: 100%; text-align: center;">
+            <div class="spinner-border text-primary" id="tab-spinner-1" role="status"></div>
+        </div>
+
+    </div>
+    <div class="reply-tab--content tab-panels">TAB 2</div>
+    <div class="likes-tab--content tab-panels" id="like_tab">
+        <div class="spinner-box" style="width: 100%; text-align: center;">
+            <div class="spinner-border text-primary" id="tab-spinner-3" role="status"></div>
+        </div>
+    </div>
+    <div class="media-tab--content tab-panels">TAB 4</div>
+</div>

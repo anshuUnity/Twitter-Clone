@@ -1,7 +1,6 @@
 from django.test import TestCase
-from deep_translator import GoogleTranslator
+import sys
 
-translated = GoogleTranslator(source='auto', target='kn').translate(to_translate)
-print(translated)
+print(sys.executable)
 
 # Create your tests here.

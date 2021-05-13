@@ -1,3 +1,4 @@
+from django.core.mail import message
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.http import JsonResponse, HttpResponseRedirect
@@ -9,9 +10,13 @@ from .forms import TweetForm, CommentForm
 from accounts.models import Followers
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
+from django.conf import settings
 
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+
+from .tasks import my_first_task, send_mail_task
+
 # Create your views here.
 
 @method_decorator(login_required, name='dispatch')
@@ -22,6 +27,7 @@ class HomeView(View):
         followObj = Followers.objects.get(user=request.user)
         following_obj = followObj.following.all()
         tweet = Tweet.objects.select_related('user','user__userprofile').prefetch_related('likes').filter(user__in = following_obj).order_by("-date")
+
         if tweet:
             context = {
                 'tweet_form':form,
@@ -70,11 +76,21 @@ def like_tweet(request):
         else:
             tweet_obj.likes.add(request.user)
             liked = True
+            subject = "Your Tweet got a Liked"
+            message = f'Hi {tweet_obj.user.username}, {request.user.username} has Liked Your Tweet "{tweet_obj.tweet_content}"'
+            email_from = settings.EMAIL_HOST_USER
+            recepient_list = [tweet_obj.user.email]
+
+            try:
+                send_mail_task.delay(subject, message, email_from, recepient_list)
+            except:
+                print('Mail Not Send')
         like_count = tweet_obj.likes.count()
         data = {
             'liked':liked,
             'count':like_count,
         }
+
         return JsonResponse(data)
     else:
         return JsonResponse({'liked':'not worked'})
@@ -127,3 +143,33 @@ def tweetDetail(request, id):
         'comment_form':form,
     }
     return render(request, 'tweets/tweet_detail.html', data)
+
+@csrf_exempt
+def get_ajax_search_result(request):
+    if request.is_ajax():
+        result = None
+        search_text = request.POST.get('searchtext')
+        query_s = User.objects.filter(username__startswith=search_text).select_related('userprofile')
+        if len(query_s) > 0 and len(search_text) > 0:
+            data = []
+            for singel_query in query_s:
+                if singel_query.userprofile.profileImage:
+                    items = {
+                        'username':singel_query.username,
+                        'profile_pic':singel_query.userprofile.profileImage.url,
+                        'profile_url':singel_query.userprofile.get_absolute_url(),
+                    }
+                else:
+                    items = {
+                        'username':singel_query.username,
+                        'profile_pic':'https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640',
+                        'profile_url':singel_query.userprofile.get_absolute_url(),
+                    }
+                data.append(items)
+            result = data
+        else:
+            result = "No Matching Result"
+        return JsonResponse({'data':result})
+    
+    else:
+        return HttpResponseRedirect(reverse('home'))

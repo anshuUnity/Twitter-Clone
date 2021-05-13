@@ -44,6 +44,16 @@
 
 {% endblock content %}
 
+{% block right_sidebar %}
+  <div class="search--form_div">
+      <form action="{% url 'tweets:search' %}" method="post" autocomplete="off" id="search-form">
+        {% csrf_token %}
+        <input type="text" class="search-input" id="input-search" placeholder="Search Twitter...">
+      </form>
+  </div>
+  <div class="search-result-card result-not-visible" id="search-result-box"></div>
+{% endblock %}
+
 {% block script %}
   <script src="{% static 'js/home.js' %}"></script>
 {% endblock %}

@@ -38,8 +38,8 @@
 }
 
 .profile-image{
-    width: 20%;
-    height: 15%;
+    max-width: 20%;
+    max-height: 15%;
     border: 3px solid white;
     border-radius: 50%;
     margin-top: -10%;
@@ -96,6 +96,7 @@
 
 .edit--button{
     margin-right: 5px;
+    margin-top: 20px;
 }
 
 .link-calender--icon{
@@ -157,4 +158,70 @@
     .edit-profile-btn{
         margin-top: -15%;
     }
+}
+
+/* tabs styling */
+.tab--form_container{
+    width: 100%;
+    display: flex;
+    text-align: center;
+}
+
+.user_tweets--tabs, .user--reply-tabs, .user-liked--tweet-tabs, .user--media-tabs{
+    width: 25%;
+    margin-top: 10px;
+}
+
+.user_tweets--tabs:hover, .user--reply-tabs:hover, .user-liked--tweet-tabs:hover, .user--media-tabs:hover{
+    background: rgba(29, 161, 242, 0.1);
+}
+
+.tab-panels{
+    display: none;
+}
+
+.tab-btn{
+    background: none;
+    border: none;
+    outline: none;
+}
+
+.tab-spinner-1{
+    display: none;
+}
+
+.user_tweet_tab-div{
+    width: 100%;
+    display: flex;
+}
+
+.user-profile-pic{
+    width: 15%;
+    text-align: center;
+}
+
+.user-profile-pic img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.user-detail--tweet-content{
+    width: 85%;
+}
+
+.user_tweet_tab-div{
+    margin-top: 10px;
+    border: 1px solid rgb(218, 215, 215);
+    border-left: none;
+    border-right: none;
+}
+
+.user-profile-pic{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.invisible{
+    display: none;
 }

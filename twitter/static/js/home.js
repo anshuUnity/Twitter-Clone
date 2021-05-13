@@ -189,3 +189,57 @@ $('.like-form').submit(function(e){
 
 });
 
+// live search form
+
+const searchForm = document.getElementById('search-form');
+const searchInput = document.getElementById('input-search');
+
+const resultBox = document.getElementById('search-result-box');
+
+const url_action = searchForm.action
+
+const fetchSearchResult = (user_name) => {
+    $.ajax({
+        type: 'POST',
+        url: url_action,
+        data: {
+            'searchtext':user_name,
+        },
+        beforeSend: function(){
+            resultBox.innerHTML = `<div class="spinner-border text-primary" role="status"></div>`
+        },
+        success: function(response){
+            const data = response.data;
+
+            if (Array.isArray(data)) {
+                resultBox.innerHTML = '';
+                data.forEach(singelUser=> {
+                    resultBox.innerHTML += `<div class="singel-result">
+                                                <img class="search-result-profile_pic" src="${singelUser.profile_pic}" alt="DP">
+                                                <a href="${singelUser.profile_url}" class="search-item-result">${singelUser.username}</a>
+                                            </div>
+                                            <hr>`
+                });
+            }else{
+                if (searchInput.value.length > 0 ) {
+                    resultBox.innerHTML = `<b>${data}</b>`;
+                }else{
+                    resultBox.classList.add('result-not-visible');
+                }
+            }
+        },
+        error: function(error){
+            console.log(error);
+        },
+    });
+}
+
+searchInput.addEventListener('keyup', e=>{
+
+    if (resultBox.classList.contains('result-not-visible')) {
+        resultBox.classList.remove('result-not-visible');
+    }
+
+    fetchSearchResult(e.target.value);
+});
+
