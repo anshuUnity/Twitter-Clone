@@ -1,2 +1,2 @@
 # Twitter-Clone
- Twitter clone using django and Vanilla javascript
+ Twitter clone using django framework and Vanilla javascript
