@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, Http404
-from .forms import SignUpForm
+from .forms import SignUpForm, UserProfileForm
 
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
@@ -10,7 +10,6 @@ from django.db.models import Count
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-
 # my models
 from .models import Followers, Userprofile
 from tweets.models import Tweet
@@ -20,7 +19,7 @@ from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
-import os
+
 import random
 from django.conf import settings
 
@@ -75,8 +74,20 @@ def loginView(request):
         return render(request, 'accounts/login.html')
 
 def profile_detail(request, username):
-    profile = get_object_or_404(User.objects.select_related('userprofile', 'followers'), username=username)
-    return render(request, 'accounts/profile.html', {'profile':profile})
+    user = get_object_or_404(User.objects.select_related('userprofile', 'followers'), username=username)
+    profile = user.userprofile
+    profile_form = UserProfileForm(instance=profile)
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = UserProfileForm(request.POST, request.FILES, instance=profile)
+            if form.is_valid():
+                update = form.save(commit=False)
+                update.user=user
+                update.save()
+            return HttpResponseRedirect(profile.get_absolute_url())
+        else:
+            form = UserProfileForm(instance=profile)
+    return render(request, 'accounts/profile.html', {'profile':user, 'p_form':profile_form})
 
 @csrf_exempt
 @login_required
@@ -138,29 +149,30 @@ class ProfileUserLikedTweet(View):
         user_data = User.objects.select_related('userprofile').get(username=profile_username)
         liked_post = Tweet.objects.filter(likes=user_data).select_related('user')
 
-        query_list = []
-
-        for item in liked_post:
-            query_dict = {
-                'username': item.user.username,
-                'content': item.tweet_content,
-                'fullname':item.user.userprofile.name,
-            }
-
-            if item.user.userprofile.profileImage:
-                query_dict['profile_pic'] = str(item.user.userprofile.profileImage.url)
-            else:
-                query_dict['profile_pic'] = "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640"
-
-            query_list.append(query_dict)
-
         if liked_post:
-            data = {
-                'liked_post':query_list
-            }
+            query_list = []
+
+            for item in liked_post:
+                query_dict = {
+                    'username': item.user.username,
+                    'content': item.tweet_content,
+                    'fullname':item.user.userprofile.name,
+                }
+
+                if item.user.userprofile.profileImage:
+                    query_dict['profile_pic'] = str(item.user.userprofile.profileImage.url)
+                else:
+                    query_dict['profile_pic'] = "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640"
+
+                query_list.append(query_dict)
+                data = {
+                    'is_data':True,
+                    'liked_post':query_list
+                }
         else:
-            message = f"@{user_data.username} has not liked any tweet, When they do, it will appear here."
+            message = f"<b>@{user_data.username}</b> has not liked any tweet, When they do, it will appear here."
             data = {
+                'is_data': False,
                 'liked_post': message
             }
 
@@ -226,6 +238,11 @@ def check_otp(request):
             curr_user_profile.save()
             return JsonResponse({'data': True})
         else:
-            return JsonResponse({'data': False})
+            return JsonResponse({'error': True})
     return HttpResponseRedirect(reverse('home'))
 
+@login_required
+def editprofile(request):
+    user = User.objects.get(username=request.user.username)
+    print(user.username)
+    return HttpResponse(user.username)

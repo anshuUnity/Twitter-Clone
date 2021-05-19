@@ -13,14 +13,22 @@
             <p class="tweet-counts">6 Tweets</p>
         </div>
         <div class="main-profile__section-coverimage">
-            <img class="cover-image" src="{{profile.userprofile.coverImage.url}}" alt="Cover Image could not load">
+            {% if profile.userprofile.coverImage %}
+                <img class="cover-image" src="{{profile.userprofile.coverImage.url}}" alt="Cover Image could not load">
+            {% else %}
+                <img class="cover-image" src="https://thefactnews.in/wp-content/uploads/2020/09/TWITTER-ROMANCE.jpg" alt="Cover Image could not load">
+            {% endif %}
             <div class="profile-image__btns">
                 <div class="profile-image__div">
-                    <img src="{{profile.userprofile.profileImage.url}}" alt="Profile Image could not load" class="profile-image">
+                    {% if profile.userprofile.profileImage %}
+                        <img src="{{profile.userprofile.profileImage.url}}" alt="Profile Image could not load" class="profile-image">
+                    {% else %}
+                        <img src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" alt="Profile Image could not load" class="profile-image">
+                    {% endif %}
                 </div>
                 {% if profile.username == request.user.username %}
                     <div class="edit--button">
-                        <button class="edit-profile-btn">Edit Profile</button>
+                        <button style="outline: none;" class="edit-profile-btn" data-toggle="modal" data-target="#editFormModal" data-backdrop="static" data-keyboard="false">Edit Profile</button>
                     </div>
                 {% else %}
                     <div class="edit--button">
@@ -43,7 +51,11 @@
         <div class="profile-content--div">
             <div class="username--full__name">
                 <h5 class="full--name--content">
-                    {{profile.userprofile.name}}
+                    {% if profile.userprofile.name %}
+                        {{profile.userprofile.name}}
+                    {% else %}
+                        Twitter User
+                    {% endif %}
                     {% if request.user.is_authenticated and request.user.username == profile.username %}
                         <i style="cursor: pointer;" class="fa fa-info-circle" data-toggle="modal" data-target="#exampleModal"></i>
                     {% endif %}
@@ -80,12 +92,11 @@
         </div>
     </div>
 
-
-<!-- modal popup -->
-<!-- Button trigger modal -->
+    <!-- modal popup -->
+    <!-- Button trigger modal -->
 
   
-<!-- Modal -->
+    <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -124,6 +135,8 @@
       </div>
     </div>
 </div>
+
+{% include 'accounts/__profile_edit__.html' %}
 {% endblock content %}
 
 {% block right_sidebar %}

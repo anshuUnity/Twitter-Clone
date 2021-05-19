@@ -27,7 +27,6 @@ class HomeView(View):
         followObj = Followers.objects.get(user=request.user)
         following_obj = followObj.following.all()
         tweet = Tweet.objects.select_related('user','user__userprofile').prefetch_related('likes').filter(user__in = following_obj).order_by("-date")
-
         if tweet:
             context = {
                 'tweet_form':form,
@@ -76,15 +75,6 @@ def like_tweet(request):
         else:
             tweet_obj.likes.add(request.user)
             liked = True
-            subject = "Your Tweet got a Liked"
-            message = f'Hi {tweet_obj.user.username}, {request.user.username} has Liked Your Tweet "{tweet_obj.tweet_content}"'
-            email_from = settings.EMAIL_HOST_USER
-            recepient_list = [tweet_obj.user.email]
-
-            try:
-                send_mail_task.delay(subject, message, email_from, recepient_list)
-            except:
-                print('Mail Not Send')
         like_count = tweet_obj.likes.count()
         data = {
             'liked':liked,

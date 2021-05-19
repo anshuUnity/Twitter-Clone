@@ -13,5 +13,6 @@ urlpatterns = [
     path('tweets/liked/', views.ProfileUserLikedTweet.as_view(), name="liked_tweet"),
     path('user/reports/', views.render_pdf_view, name='user_report'),
     path('user/verify-email/', views.send_otp, name='email_verify'),
-    path('enter-otp', views.check_otp, name='check_otp'),
+    path('enter-otp/', views.check_otp, name='check_otp'),
+    path('edit-profile/', views.editprofile, name='edit_profile')
 ]

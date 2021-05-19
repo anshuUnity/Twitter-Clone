@@ -126,24 +126,30 @@ $('#user_likes').submit(function(e){
         success: function(response){
             like_tab_spinner.classList.add('tab-spinner-1');
             likeTab.innerHTML = "";
-            for(const item of response.liked_post){
-                likeTab.innerHTML += `<div class="user_tweet_tab-div">
-                                            <div class="user-profile-pic">
-                                                <img src="${item.profile_pic}" alt="">
-                                            </div>
-                                            <div class="user-detail--tweet-content">
-                                                <div class="username-detail">
-                                                    <span>
-                                                        ${item.fullname}
-                                                    </span>
-                                                    
-                                                    <span>@${item.username}</span>
+            if (response.is_data == true) {
+                for(const item of response.liked_post){
+                    likeTab.innerHTML += `<div class="user_tweet_tab-div">
+                                                <div class="user-profile-pic">
+                                                    <img src="${item.profile_pic}" alt="">
                                                 </div>
-                                                <div class="tweet-content">
-                                                    <span>${item.content}</span>
+                                                <div class="user-detail--tweet-content">
+                                                    <div class="username-detail">
+                                                        <span>
+                                                            ${item.fullname}
+                                                        </span>
+                                                        
+                                                        <span>@${item.username}</span>
+                                                    </div>
+                                                    <div class="tweet-content">
+                                                        <span>${item.content}</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>`;
+                                            </div>`;
+                }
+            }else{
+                likeTab.innerHTML = `<div class="alert alert-primary" role="alert">
+                                        ${response.liked_post}
+                                    </div>`
             }
 
         },
@@ -211,7 +217,7 @@ $('#check-otp').submit(function(e){
                                                 </div>
                                             `
             }
-            else{
+            if (response.error) {
                 email_verify_div.innerHTML += `
                                                 <div class="alert alert-danger" role="alert">
                                                     Please enter a valid otp

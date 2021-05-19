@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 #reciever
 from django.dispatch import receiver
-from accounts.models import Userprofile, Followers
+from .models import Userprofile, Followers
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
