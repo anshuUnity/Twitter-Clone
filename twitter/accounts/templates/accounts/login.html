@@ -2,7 +2,8 @@
 {% load static %}
 
 {% block title %}twitter-login{% endblock %}
-{% block css %} <link rel="stylesheet" href="{% static 'css/login.css' %}"> {% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}"> {% endblock %}
 {% block content %}
 
 {% if notfound %}
@@ -14,28 +15,29 @@
 </div>
 {% endif %}
 
-    <div class="section">
-        <div class="content">
-            <img src="{% static 'images/twitter-logo.png' %}" alt="twitter logo" width="40px" height="35px">
-            <div class="heading mt-2">
-                <h2>Log in to Twitter</h2><br>
-            </div>
-            <div class="form-content">
-                <form action="{% url 'accounts:login' %}" method="post">
-                    {% csrf_token %}
-                    <input type="text" name="username" id="id-username" autocomplete="off" placeholder="Please enter your username" required><br>
-                    <input type="password" name="password" id="id_password" placeholder="Password" required><br>
-                    <button class="login-btn" type="submit">Login</button><br>
-                </form>
-                <div class="important-link mt-3">
-                    <div class="forget-pass-link flex-child">
-                        <a href="#">forgot password?</a>
-                    </div>
-                    <div class="create-account-link flex-child">
-                        <a href="#">Signup for Twitter</a>
-                    </div>
+<div class="section">
+    <div class="content">
+        <img src="{% static 'images/twitter-logo.png' %}" alt="twitter logo" width="40px" height="35px">
+        <div class="heading mt-2">
+            <h2>Log in to Twitter</h2><br>
+        </div>
+        <div class="form-content">
+            <form action="{% url 'accounts:login' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="username" id="id-username" autocomplete="off"
+                    placeholder="Please enter your username" required><br>
+                <input type="password" name="password" id="id_password" placeholder="Password" required><br>
+                <button class="login-btn" type="submit">Login</button><br>
+            </form>
+            <div class="important-link mt-3">
+                <div class="forget-pass-link flex-child">
+                    <a href="#">forgot password?</a>
+                </div>
+                <div class="create-account-link flex-child">
+                    <a href="{% url 'accounts:register' %}">Signup for Twitter</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}

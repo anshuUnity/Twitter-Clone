@@ -16,8 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-import debug_toolbar
-
 from accounts import views
 from tweets import views as tview
 
@@ -27,13 +25,14 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', tview.HomeView.as_view(), name='home'),
-    path('<username>/', views.profile_detail, name = 'profile_detail'),
-    path('accounts/', include(('accounts.urls','accounts'), namespace='accounts')),
+    path('<username>/', views.profile_detail, name='profile_detail'),
+    path('accounts/', include(('accounts.urls', 'accounts'), namespace='accounts')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('tweets/', include('tweets.urls')),
-    path('__debug__/', include(debug_toolbar.urls)),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)

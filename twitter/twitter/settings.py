@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
     'crispy_forms',
 
     # my apps
@@ -50,7 +49,6 @@ INSTALLED_APPS = [
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -90,8 +88,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'twitter',
-        'USER': '*****',
-        'PASSWORD': '******',
+        'USER': 'root',
+        'PASSWORD': 'C@4d7c47',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -154,12 +152,12 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-LOGIN_URL = '/accounts/user_login'
+LOGIN_URL = '/accounts/login'
 LOGOUT_REDIRECT_URL = 'home'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com' # mail service smtp
-EMAIL_HOST_USER = 'YOUR MAIL' # email id
-EMAIL_HOST_PASSWORD = 'YOUR PASSWORD' #password
+EMAIL_HOST = 'smtp.gmail.com'  # mail service smtp
+EMAIL_HOST_USER = 'anshupal258@gmail.com'  # email id
+EMAIL_HOST_PASSWORD = 'nvdwwmydndzbygvc'  # password
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True

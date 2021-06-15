@@ -19,6 +19,7 @@ from .tasks import my_first_task, send_mail_task
 
 # Create your views here.
 
+
 @method_decorator(login_required, name='dispatch')
 class HomeView(View):
 
@@ -26,15 +27,23 @@ class HomeView(View):
         form = TweetForm()
         followObj = Followers.objects.get(user=request.user)
         following_obj = followObj.following.all()
-        tweet = Tweet.objects.select_related('user','user__userprofile').prefetch_related('likes').filter(user__in = following_obj).order_by("-date")
+        tweet = Tweet.objects.select_related('user', 'user__userprofile').prefetch_related(
+            'likes').filter(user__in=following_obj).order_by("-date")
+        default_user = User.objects.select_related(
+            'userprofile').get(username='anshu')
+        default_tweet = Tweet.objects.filter(
+            user=default_user).prefetch_related('tweetcomments_set')
+        print(default_tweet)
         if tweet:
             context = {
-                'tweet_form':form,
-                'tweets':tweet,
+                'tweet_form': form,
+                'tweets': tweet,
+                'default_tweet': default_tweet,
             }
         else:
             context = {
-                'no Data': 'Follow Someone to see the latest tweets'
+                'no_Data': 'Follow Someone to see the latest tweets',
+                'tweet_form': form,
             }
         return render(request, 'home.html', context)
 
@@ -49,14 +58,14 @@ class HomeView(View):
                 data = {}
                 tweet_obg = Tweet.objects.get(id=form.instance.id)
                 data = {
-                    'tweet_content':tweet_obg.tweet_content,
-                    'tweet_date':tweet_obg.date,
-                    'tweet_user':tweet_obg.user.username,
+                    'tweet_content': tweet_obg.tweet_content,
+                    'tweet_date': tweet_obg.date,
+                    'tweet_user': tweet_obg.user.username,
                 }
                 if(tweet_obg.media):
                     data["tweet_media"] = str(tweet_obg.media.url)
 
-                tweet = {"data":data}
+                tweet = {"data": data}
                 return JsonResponse(tweet)
             else:
                 return JsonResponse({'error': True, 'errors': form.errors})
@@ -77,18 +86,21 @@ def like_tweet(request):
             liked = True
         like_count = tweet_obj.likes.count()
         data = {
-            'liked':liked,
-            'count':like_count,
+            'liked': liked,
+            'count': like_count,
         }
 
         return JsonResponse(data)
     else:
-        return JsonResponse({'liked':'not worked'})
+        return JsonResponse({'liked': 'not worked'})
+
 
 def tweetDetail(request, id):
-    tweet_obj = get_object_or_404(Tweet.objects.select_related('user','user__userprofile'), id=id)
+    tweet_obj = get_object_or_404(
+        Tweet.objects.select_related('user', 'user__userprofile'), id=id)
     tweet_likes = tweet_obj.likes.count()
-    comment_obj = TweetComments.objects.select_related('user','user__userprofile').filter(tweet=tweet_obj).order_by('-date')
+    comment_obj = TweetComments.objects.select_related(
+        'user', 'user__userprofile').filter(tweet=tweet_obj).order_by('-date')
     check_list = ['covid', 'vaccination', 'covid-19', 'covid19']
     covid_bar = False
     for i in check_list:
@@ -106,60 +118,65 @@ def tweetDetail(request, id):
             form.instance.tweet = tweet_obj
             form.save()
             form_data = {}
-            comment_obj = TweetComments.objects.select_related('user').get(id=form.instance.id)
+            comment_obj = TweetComments.objects.select_related(
+                'user').get(id=form.instance.id)
             data = {
-                'comment':comment_obj.comment_content,
-                'date':comment_obj.date,
-                'name':comment_obj.user.userprofile.name,
-                'comment_username':comment_obj.user.username,
-                'tweet_username':tweet_obj.user.username,
+                'comment': comment_obj.comment_content,
+                'date': comment_obj.date,
+                'name': comment_obj.user.userprofile.name,
+                'comment_username': comment_obj.user.username,
+                'tweet_username': tweet_obj.user.username,
             }
             if (comment_obj.user.userprofile.profileImage):
-                data['comment_profile'] = str(comment_obj.user.userprofile.profileImage.url)
+                data['comment_profile'] = str(
+                    comment_obj.user.userprofile.profileImage.url)
             else:
-                data['comment_profile'] = str("https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640")
+                data['comment_profile'] = str(
+                    "https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640")
             return JsonResponse(data)
         else:
-            return JsonResponse({"Error":form.errors})
+            return JsonResponse({"Error": form.errors})
     else:
         form = CommentForm()
-        
+
     data = {
-        'tweet':tweet_obj,
+        'tweet': tweet_obj,
         'tweet_likes': tweet_likes,
-        'comments':comment_obj,
+        'comments': comment_obj,
         'check_list': check_list,
-        'covid_bar':covid_bar,
-        'comment_form':form,
+        'covid_bar': covid_bar,
+        'comment_form': form,
     }
     return render(request, 'tweets/tweet_detail.html', data)
+
 
 @csrf_exempt
 def get_ajax_search_result(request):
     if request.is_ajax():
         result = None
         search_text = request.POST.get('searchtext')
-        query_s = User.objects.filter(username__startswith=search_text).select_related('userprofile')
+        query_s = User.objects.filter(
+            username__startswith=search_text).select_related('userprofile')
         if len(query_s) > 0 and len(search_text) > 0:
             data = []
             for singel_query in query_s:
                 if singel_query.userprofile.profileImage:
                     items = {
-                        'username':singel_query.username,
-                        'profile_pic':singel_query.userprofile.profileImage.url,
-                        'profile_url':singel_query.userprofile.get_absolute_url(),
+                        'username': singel_query.username,
+                        'profile_pic': singel_query.userprofile.profileImage.url,
+                        'profile_url': singel_query.userprofile.get_absolute_url(),
                     }
                 else:
                     items = {
-                        'username':singel_query.username,
-                        'profile_pic':'https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640',
-                        'profile_url':singel_query.userprofile.get_absolute_url(),
+                        'username': singel_query.username,
+                        'profile_pic': 'https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640',
+                        'profile_url': singel_query.userprofile.get_absolute_url(),
                     }
                 data.append(items)
             result = data
         else:
             result = "No Matching Result"
-        return JsonResponse({'data':result})
-    
+        return JsonResponse({'data': result})
+
     else:
         return HttpResponseRedirect(reverse('home'))

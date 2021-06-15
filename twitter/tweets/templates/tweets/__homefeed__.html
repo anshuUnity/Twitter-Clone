@@ -1,21 +1,22 @@
 {% load static %}
 {% load custom_tag %}
+{% if tweets %}
 {% for tweet in tweets %}
 
 <div class="main_div--home_feed" id='scroll-div'>
     <div class="profile_ima--div mt-2 mb-2">
         {% if tweet.user.userprofile.profileImage %}
-          <img src="{{tweet.user.userprofile.profileImage.url}}" alt="DP">
+        <img src="{{tweet.user.userprofile.profileImage.url}}" alt="DP">
         {% else %}
-            <img src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" alt="DP">
+        <img src="https://twirpz.files.wordpress.com/2015/06/twitter-avi-gender-balanced-figure.png?w=640" alt="DP">
         {% endif %}
     </div>
-    <div class="tweet_content__main--div mt-2 mb-2" style="width:100%;" >
+    <div class="tweet_content__main--div mt-2 mb-2" style="width:100%;">
         <div class="username--time-div">
             <span class="fullname">
                 {{tweet.user.userprofile.name}}
                 {% if tweet.user.userprofile.is_verified %}
-                  <img style="width:4%;" src="{% static 'images/icons/verif-icon.svg' %}" alt="verify">
+                <img style="width:4%;" src="{% static 'images/icons/verif-icon.svg' %}" alt="verify">
                 {% endif %}
             </span>
 
@@ -29,17 +30,18 @@
 
         </div>
         {% if request.user.is_authenticated %}
-            <div class="tweet-more dropdown">
-                <img class="mr-3 dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                style="width: 4%;cursor: pointer;" src="{% static 'images/icons/tweet-more.svg' %}" alt="more">
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    {% if request.user == tweet.user %}
-                        <a class="dropdown-item" href="#">Edit</a>
-                    {% else %}
-                        <a class="dropdown-item" href="#">Report</a>
-                    {% endif %}
-                </div>
+        <div class="tweet-more dropdown">
+            <img class="mr-3 dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false" style="width: 4%;cursor: pointer;"
+                src="{% static 'images/icons/tweet-more.svg' %}" alt="more">
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% if request.user == tweet.user %}
+                <a class="dropdown-item" href="#">Edit</a>
+                {% else %}
+                <a class="dropdown-item" href="#">Report</a>
+                {% endif %}
             </div>
+        </div>
         {% endif %}
 
         <div class="tweet-body--main">
@@ -56,32 +58,39 @@
                     Your browser does not support the video tag.
                 </video>
                 {% elif tweet.media %}
-                    <img onclick="openModal('{{tweet.id}}')" id="tweet_image-{{tweet.id}}" src="{{tweet.media.url}}" alt="Tweet Media">
+                <img onclick="openModal('{{tweet.id}}')" id="tweet_image-{{tweet.id}}" src="{{tweet.media.url}}"
+                    alt="Tweet Media">
                 {% endif %}
             </div>
         </div>
 
         <div class="tweet-interact__icons mt-2">
             <span class="tweet--comment" data-toggle="tooltip" data-placement="right" title="Comment">
-                <img class="tweet-interact_icon--images" id="interact-1" src="{% static 'images/icons/comment.svg' %}" alt="comment">
+                <img class="tweet-interact_icon--images" id="interact-1" src="{% static 'images/icons/comment.svg' %}"
+                    alt="comment">
                 <span class="count-interaction">2</span>
             </span>
             <span class="tweet--re icon-pad" data-toggle="tooltip" data-placement="right" title="Retweet">
-                <img class="tweet-interact_icon--images" id="interact-2" src="{% static 'images/icons/retweet.svg' %}" alt="retweet">
+                <img class="tweet-interact_icon--images" id="interact-2" src="{% static 'images/icons/retweet.svg' %}"
+                    alt="retweet">
                 <span class="count-interaction">2</span>
             </span>
-            <span class="tweet--like icon-pad" id="like-icon-ajax--{{tweet.id}}" data-toggle="tooltip" data-placement="right" title="Like">
+            <span class="tweet--like icon-pad" id="like-icon-ajax--{{tweet.id}}" data-toggle="tooltip"
+                data-placement="right" title="Like">
                 {% with like=tweet.likes.all %}
-                    {% if request.user in like %}
-                        <img class="tweet-interact_icon--images interact-3 when-liked" onclick="likeTweet('{{tweet.id}}')" src="{% static 'images/icons/liked.svg' %}" alt="like">
-                    {% else %}
-                        <img class="tweet-interact_icon--images interact-3" onclick="likeTweet('{{tweet.id}}')" src="{% static 'images/icons/heart.svg' %}" alt="like">
-                    {% endif %}
-                    <span class="count-interaction">{{like.count}}</span>
+                {% if request.user in like %}
+                <img class="tweet-interact_icon--images interact-3 when-liked" onclick="likeTweet('{{tweet.id}}')"
+                    src="{% static 'images/icons/liked.svg' %}" alt="like">
+                {% else %}
+                <img class="tweet-interact_icon--images interact-3" onclick="likeTweet('{{tweet.id}}')"
+                    src="{% static 'images/icons/heart.svg' %}" alt="like">
+                {% endif %}
+                <span class="count-interaction">{{like.count}}</span>
                 {% endwith %}
             </span>
             <span class="tweet--share icon-pad" data-toggle="tooltip" data-placement="right" title="Share">
-                <img class="tweet-interact_icon--images" id="interact-4" src="{% static 'images/icons/share.svg' %}" alt="share">
+                <img class="tweet-interact_icon--images" id="interact-4" src="{% static 'images/icons/share.svg' %}"
+                    alt="share">
                 <span class="count-interaction">2</span>
             </span>
         </div>
@@ -97,6 +106,11 @@
 </div>
 
 {% endfor %}
+{% else %}
+<div class="container">
+    {{no_Data}}
+</div>
+{% endif %}
 
 
 <!-- The Image Modal -->
@@ -104,7 +118,7 @@
     <!-- The Close Button -->
     <span class="close">&times;</span>
 
-      <!-- Modal Content (The Image) -->
+    <!-- Modal Content (The Image) -->
     <img class="modal-content" id="img01">
 </div>
 
